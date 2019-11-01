@@ -1,0 +1,41 @@
+
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block title %}Blog | Home{% endblock title %}
+
+{% block content %}
+    <h1>Welcome to my Blog </h1>
+
+    {% for post in bpost %}
+    <article class="media content-section">
+            <div class="media-body">
+              <div class="article-metadata">
+                <a class="mr-2" href="#">{{ post.author }}</a>
+                <small class="text-muted">{{ post.date_posted }}</small>
+              </div>
+              <h2><a class="article-title" href="{% url 'post-detail' post.id  %}">{{ post.title }}</a></h2>
+              <p class="article-content">{{ post.content }}</p>
+            </div>
+          </article>
+    {% endfor %}      
+<hr>
+<!-- starting pagination -->
+<div class="container text-center mb-3">
+    {% if is_paginated %}
+          {% if page_obj.has_previous %}
+            <a href="?page=1" class="btn btn-info btn-sm">1</a>
+            <a href="?page={{page_obj.previous_page_number}}" class="btn btn-info btn-sm">Previous</a> 
+          {% endif %}
+
+          <span><a href="?page={{page_obj.number}}" class="btn btn-sm">{{page_obj.number}}</a></span>
+
+    {% if page_obj.has_next %}
+    <a href="?page={{page_obj.next_page_number}}" class="btn btn-info btn-sm" >Next</a>
+    <a href="?page={{page_obj.paginator.num_pages}}" class="btn btn-sm btn-info">Last</a>
+    {% endif %}
+
+    {% endif %}
+  </div>
+<!-- ending pagination -->
+
+{% endblock content %}
